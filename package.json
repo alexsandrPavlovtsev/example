@@ -4,5 +4,26 @@
   },
   "dependencies": {
     "@types/node": "^13.7.4"
-  }
+  },
+  "name": "example",
+  "description": "I am Alexander Pavlovtsev, solemnly swear to take this course to the end and become the best front-end developer.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexsandrPavlovtsev/example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexsandrPavlovtsev/example/issues"
+  },
+  "homepage": "https://github.com/alexsandrPavlovtsev/example#readme"
 }
