@@ -1,5 +1,6 @@
 const TaskList = require("../js/1_task/1_task_list_function.js");
 const CatFactory = require("../js/2_task/2_task_catFactory.js");
+const CatsGroupGenerate = require('../js/3_task/3_task_catsGroupGenerate.js')
 const assert = require("chai").assert;
 describe("Function", function() {
   describe("1 Task", function() {
@@ -49,5 +50,12 @@ describe("Function", function() {
             'tailLength'
         )
       });
+  });
+  describe("3 Task", function() {
+    it("Function must return object array with n length", function() {
+      const catsGroupGenerate = CatsGroupGenerate.catsGroupGenerate(5);
+      assert.isArray(catsGroupGenerate, 'catsGroupGenerate is an object array');
+      assert.lengthOf(catsGroupGenerate, 5, "length of the new object array must be 5(n)");
+    });
   });
 });
