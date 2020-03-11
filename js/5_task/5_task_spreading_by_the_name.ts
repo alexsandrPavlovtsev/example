@@ -1,7 +1,7 @@
 import { Cat } from "../2_task/2_task_catFactory";
 import { catsGroupGenerate } from "../3_task/3_task_catsGroupGenerate";
 
-class CatsNameStats {
+export class CatsNameStats {
   constructor(private catsList: Cat[]) {
     this.catsList = catsList;
   }
@@ -25,5 +25,5 @@ class CatsNameStats {
     return this.catsList;
   }
 }
-const catsNameStats = new CatsNameStats(catsGroupGenerate(10));
-catsNameStats.calculateSpreading();
+// const catsNameStats = new CatsNameStats(catsGroupGenerate(10));
+// catsNameStats.calculateSpreading();

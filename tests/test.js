@@ -3,7 +3,7 @@ const CatFactory = require("../js/2_task/2_task_catFactory.js");
 const CatsGroupGenerate = require('../js/3_task/3_task_catsGroupGenerate.js');
 const CatsStatistics = require('../js/4_task/4_catsFunctions.js');
 const catsGroupGenerate = CatsGroupGenerate.catsGroupGenerate(5);
-
+const SpreadingByTheName = require('../js/5_task/5_task_spreading_by_the_name.js');
 const assert = require("chai").assert;
 describe("Function", function() {
   describe("1 Task", function() {
@@ -90,6 +90,13 @@ describe("Function", function() {
     });
     it("Function returnNamesYoungerCats must return cats array", function() {
       assert.typeOf(returnNamesYongerCats, 'array', "returning type must be an array");
+    });
+  });
+  describe("5 Task", function() {
+    it("Function spreadingByTheName must return object", function() {
+      const catsNameStats = new SpreadingByTheName.CatsNameStats(catsGroupGenerate);
+      const calculateSpreading = catsNameStats.calculateSpreading();
+      assert.isObject(calculateSpreading, "spreadingByTheName must be object");
     });
   });
 });
