@@ -1,12 +1,12 @@
 import { Cat } from './../2_task/2_task_catFactory';
 import { catsGroupGenerate } from '../3_task/3_task_catsGroupGenerate';
-const catsGroupcount:number = +process.argv[2];
+const catsGroupcount:number = +process.argv[2] || 8;
 const oldestCatsCount:number = +process.argv[3];
 const youngestCatsCount:number = +process.argv[4];
 
-class CatsStatistics {
+export class CatsStatistics {
   constructor(private catList: Cat[]) {
-    this.catList = catsGroupGenerate(catsGroupcount);
+    this.catList = catsGroupGenerate(8);
   }
   returnFemaleCats(): Cat[] {
     return this.catList.filter(el => el.gender === 'male');
@@ -55,8 +55,8 @@ class CatsStatistics {
     return 'Sorry there is no cats';
   }
 }
-const catsStatistics = new CatsStatistics(catsGroupGenerate(catsGroupcount));
+// const catsStatistics = new CatsStatistics(catsGroupGenerate(catsGroupcount));
 // console.log(catsStatistics.returnFemaleCats())
 // console.log(catsStatistics.returnNames())
 // console.log(catsStatistics.returnOldestCats(oldestCatsCount));
-console.log(catsStatistics.returnNamesYoungerCats(youngestCatsCount))
+// console.log(catsStatistics.returnNamesYoungerCats(youngestCatsCount))

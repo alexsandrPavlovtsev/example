@@ -3,6 +3,7 @@ exports.__esModule = true;
 var _2_task_catFactory_1 = require("../2_task/2_task_catFactory");
 var count = +process.argv[2];
 function catsGroupGenerate(n) {
+    if (n === void 0) { n = 5; }
     if (n === 0)
         return;
     var catsArray = [];
