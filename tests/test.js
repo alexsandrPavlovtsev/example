@@ -5,6 +5,7 @@ const CatsStatistics = require('../js/4_task/4_catsFunctions.js');
 const CatFactoryDefault = require('../js/6_task/6_task_catFactoryDefault.js');
 const catsGroupGenerate = CatsGroupGenerate.catsGroupGenerate(5);
 const SpreadingByTheName = require('../js/5_task/5_task_spreading_by_the_name.js');
+const CatFactoryDefaultWithLoudness = require('../js/7_task/7_task_catFactoryAddLoudness.js');
 const assert = require("chai").assert;
 describe("Function", function() {
   describe("1 Task", function() {
@@ -108,6 +109,15 @@ describe("Function", function() {
     it("CatFactoryDefault must include predefined properties value", function() {
       const catFactoryDefaultWithParams = CatFactoryDefault.catFactoryDefault({name:'Alice', age:'24', gender:'Female',legsCount: '10', tailLength: '20'});
       assert.isObject(catFactoryDefaultWithParams, "spreadingByTheName must be object");
+    });
+  });
+  describe("7 Task", function() {
+    const catFactoryDefaultWithLoudness = CatFactoryDefaultWithLoudness.catFactoryDefault();
+    it("CatFactoryDefault must return object", function() {
+      assert.isObject(catFactoryDefaultWithLoudness, "catFactoryDefault must be object");
+    });
+    it("CatFactoryDefaultWithLoudness must contain loudness property", function() {
+      assert.deepInclude(catFactoryDefaultWithLoudness, {loudness: true});
     });
   });
 });
