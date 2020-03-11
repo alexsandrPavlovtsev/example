@@ -1,4 +1,5 @@
 const TaskList = require("../js/1_task/1_task_list_function.js");
+const CatFactory = require("../js/2_task/2_task_catFactory.js");
 const assert = require("chai").assert;
 describe("Function", function() {
   describe("1 Task", function() {
@@ -10,8 +11,6 @@ describe("Function", function() {
         [20, 1, 34, 2, 1, 3, 4],
         [10, 3, 24, 4, 4, 2, 2, 1]
       );
-      console.log(taskListFunction);
-      console.log(Object.keys(taskListFunction));
       assert.isObject(taskListFunction, 'taskListFunction is an object');
       assert.instanceOf(taskListFunction,TaskList.List, 'taskListFunction is instance of List class')
 
@@ -32,6 +31,23 @@ describe("Function", function() {
             legsCountList: [20, 1, 34, 2, 1, 3, 4],
             tailLengthList: [10, 3, 24, 4, 4, 2, 2, 1]
         })
+      });
+  });
+  describe("2 Task", function() {
+    it("Function must return object", function() {
+      const catFactory = CatFactory.catFactory();
+      assert.isObject(catFactory, 'taskListFunction is an object');
+    });
+    it("Returning object must have some defined properties", function() {
+      const catFactory = CatFactory.catFactory();
+        // Check if the new object have some predefined properties
+        assert.property(catFactory,
+            'name',
+            'age',
+            'gender',
+            'legsCount',
+            'tailLength'
+        )
       });
   });
 });
