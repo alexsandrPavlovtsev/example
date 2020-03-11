@@ -4,6 +4,7 @@ export interface Cat {
   age: number;
   gender: string;
   legsCount: number;
+  loudness?: boolean;
   tailLength: number;
 }
 const list = new List(
