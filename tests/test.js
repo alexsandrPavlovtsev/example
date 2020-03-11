@@ -2,6 +2,7 @@ const TaskList = require("../js/1_task/1_task_list_function.js");
 const CatFactory = require("../js/2_task/2_task_catFactory.js");
 const CatsGroupGenerate = require('../js/3_task/3_task_catsGroupGenerate.js');
 const CatsStatistics = require('../js/4_task/4_catsFunctions.js');
+const CatFactoryDefault = require('../js/6_task/6_task_catFactoryDefault.js');
 const catsGroupGenerate = CatsGroupGenerate.catsGroupGenerate(5);
 const SpreadingByTheName = require('../js/5_task/5_task_spreading_by_the_name.js');
 const assert = require("chai").assert;
@@ -97,6 +98,16 @@ describe("Function", function() {
       const catsNameStats = new SpreadingByTheName.CatsNameStats(catsGroupGenerate);
       const calculateSpreading = catsNameStats.calculateSpreading();
       assert.isObject(calculateSpreading, "spreadingByTheName must be object");
+    });
+  });
+  describe("6 Task", function() {
+    it("CatFactoryDefault must return object", function() {
+      const catFactoryDefault = CatFactoryDefault.catFactoryDefault();
+      assert.isObject(catFactoryDefault, "catFactoryDefault must be object");
+    });
+    it("CatFactoryDefault must include predefined properties value", function() {
+      const catFactoryDefaultWithParams = CatFactoryDefault.catFactoryDefault({name:'Alice', age:'24', gender:'Female',legsCount: '10', tailLength: '20'});
+      assert.isObject(catFactoryDefaultWithParams, "spreadingByTheName must be object");
     });
   });
 });
