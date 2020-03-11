@@ -1,4 +1,4 @@
-import { List } from "./../1_task/1_task_list_function";
+import { List } from "../1_task/1_task_list_function";
 import { Cat } from "../2_task/2_task_catFactory";
 
 const list = new List(
@@ -15,6 +15,7 @@ export const catFactoryDefault = (optionObject: object = {}): Cat => {
     gender: list.genderListItems,
     legsCount: list.legsCountListItems,
     tailLength: list.tailLengthListItems,
+    loudness: true,
     ...optionObject
   }
 }
