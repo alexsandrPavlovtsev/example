@@ -40,6 +40,42 @@ class Product extends ProductProducer {
         return this._productName;
     }
 }
+class GenerateInfo {
+    _dayNumber: number;
+    _productProducerGoodsCount: number;
+    _productConsumerNeedGoodsCount: number;
+    _agentShippingGoodsCount: number;
+    constructor(dayNumber: number,productProducerGoodsCount: number,productConsumerNeedGoodsCount: number, agentShippingGoodsCount: number) {
+        this._dayNumber = dayNumber;
+        this._productProducerGoodsCount = productProducerGoodsCount;
+        this._productConsumerNeedGoodsCount = productConsumerNeedGoodsCount;
+        this._agentShippingGoodsCount = agentShippingGoodsCount;
+    }
+    get dayNumber(): number {
+        return this._dayNumber;
+    }
+    get productProducerGoodsCount(): number {
+        return this._productProducerGoodsCount;
+    }
+    get productConsumerNeedGoodsCount(): number {
+        return this._productConsumerNeedGoodsCount;
+    }
+    get agentShippingGoodsCount(): number {
+        return this._agentShippingGoodsCount;
+    }
+    set dayNumber(params) {
+        this._dayNumber = params;
+    }
+    set productProducerGoodsCount(params: number) {
+        this._productProducerGoodsCount = params;
+    }
+    set productConsumerNeedGoodsCount(params: number) {
+        this._productConsumerNeedGoodsCount = params;
+    }
+    set agentShippingGoodsCount(params: number) {
+        this._agentShippingGoodsCount = params;
+    }
+}
 class ProductConsumer extends Product {
     _consumerName: string;
     _consumerNeeds: number;
@@ -99,8 +135,8 @@ class Day {
     _productConsumer: ProductConsumer;
     _agent: Agent;
     _dayNumber: number
-    constructor(dayNumber: number = 0) {
-        this._dayNumber = dayNumber;
+    constructor() {
+        this._dayNumber = 0;
         this._productProducerGoodsCount = 0;
         this._productConsumerNeedGoodsCount = 0;
         this._agentShippingGoodsCount = 0;
@@ -109,14 +145,31 @@ class Day {
         this._productConsumer = new ProductConsumer('Alibaba', 'Super dicer', 'Jon');
         this._agent = new Agent('Alibaba', 'Super dicer','Jon', 'Peter');
     }
-    randomGenerateCount() {
+    randomGenerateCount(){
         this._productProducerGoodsCount = this._productProducer.randomGenerateProducts();
         this._productConsumerNeedGoodsCount = this._productConsumer.consumerNeed();
         this._agentShippingGoodsCount = this._agent.calculateShippingGoods();
     }
     startDay() {
         this.randomGenerateCount();
+        this._dayNumber++;
+        
+    }
+    generateInfo(): GenerateInfo {
+        return new GenerateInfo(this._dayNumber, this._productProducerGoodsCount, this._productConsumerNeedGoodsCount, this._agentShippingGoodsCount);
+    }
+    getStatistics(): GenerateInfo {
+        return this.generateInfo();
     }
 }
-const day = new Day(1);
-day.startDay();
+
+const calculateStatistics = (daysCount): GenerateInfo[] => {
+    const day = new Day();
+    const statArray: GenerateInfo[] = [];
+    for(let i = 0; i < daysCount; i++) {
+        day.startDay();
+        statArray.push(day.getStatistics());
+    }
+    return statArray;
+}
+const statistics = calculateStatistics(7);
