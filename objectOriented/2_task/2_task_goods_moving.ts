@@ -163,7 +163,7 @@ class Day {
     }
 }
 
-const calculateStatistics = (daysCount): GenerateInfo[] => {
+export const calculateStatistics = (daysCount): GenerateInfo[] => {
     const day = new Day();
     const statArray: GenerateInfo[] = [];
     for(let i = 0; i < daysCount; i++) {
