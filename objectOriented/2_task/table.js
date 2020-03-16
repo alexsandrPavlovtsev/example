@@ -1,14 +1,14 @@
 
-const dataF = require('./initialize_table_data');
-const arr = dataF.returnData();
+const initizlizeDataFunc = require('./initialize_table_data');
+const tableData = initizlizeDataFunc.returnData();
 $(document).ready(function () {
     $('#main_table').DataTable({
-        data: arr,
+        data: tableData,
         columns: [
-            {title: 'DayNumber'},
-            {title: 'ProductProducerGoodsCount'},
-            {title: 'ProductConsumerNeedGoodsCount'},
-            {title: 'AgentShippingGoodsCount'},
+            {title: 'Days number'},
+            {title: 'Product producer goods count'},
+            {title: 'Product consumer needs goods count'},
+            {title: 'Agent shipping goods count'},
             {title: 'Last 3 days goods count'},
             {title: 'Last 3 days agent shipping count'},
             {title: 'Agent KPD (%)'},

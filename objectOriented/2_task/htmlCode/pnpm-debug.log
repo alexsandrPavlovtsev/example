@@ -1,0 +1,89 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 debug pnpm": {
+    "isCaseSensitive": false,
+    "store": "/Users/lodoss/.pnpm-store/2"
+  },
+  "2 debug pnpm:package-manifest": {
+    "initial": {
+      "devDependencies": {
+        "sass": "^1.25.0",
+        "typescript": "^3.8.3"
+      },
+      "dependencies": {
+        "@types/node": "^13.7.4",
+        "chai": "^4.2.0"
+      },
+      "name": "example",
+      "description": "I am Alexander Pavlovtsev, solemnly swear to take this course to the end and become the best front-end developer.",
+      "version": "1.0.0",
+      "main": "index.js",
+      "directories": {
+        "test": "test"
+      },
+      "scripts": {
+        "test": "mocha"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alexsandrPavlovtsev/example.git"
+      },
+      "keywords": [],
+      "author": "",
+      "license": "ISC",
+      "bugs": {
+        "url": "https://github.com/alexsandrPavlovtsev/example/issues"
+      },
+      "homepage": "https://github.com/alexsandrPavlovtsev/example#readme"
+    },
+    "prefix": "/Users/lodoss/Documents/GitHub/example"
+  },
+  "3 info pnpm": {
+    "message": "Lockfile is up-to-date, resolution step is skipped",
+    "prefix": "/Users/lodoss/Documents/GitHub/example"
+  },
+  "4 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/@types/node",
+  "5 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/sass",
+  "6 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/.bin/sass",
+  "7 debug pnpm:root": {
+    "prefix": "/Users/lodoss/Documents/GitHub/example",
+    "removed": {
+      "dependencyType": "dev",
+      "name": "sass",
+      "version": "1.25.0"
+    }
+  },
+  "8 debug pnpm:root": {
+    "prefix": "/Users/lodoss/Documents/GitHub/example",
+    "removed": {
+      "dependencyType": "prod",
+      "name": "@types/node",
+      "version": "13.7.4"
+    }
+  },
+  "9 debug pnpm:stats": {
+    "prefix": "/Users/lodoss/Documents/GitHub/example",
+    "removed": 3
+  },
+  "10 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/.pnpm/node_modules/fsevents",
+  "11 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/.pnpm/registry.npmjs.org/@types/node/13.9.0/node_modules",
+  "12 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/.pnpm/registry.npmjs.org/fsevents/2.1.2/node_modules",
+  "13 debug pnpm:removal": "/Users/lodoss/Documents/GitHub/example/node_modules/.pnpm/registry.npmjs.org/sass/1.26.2/node_modules",
+  "14 debug pnpm:stage": {
+    "prefix": "/Users/lodoss/Documents/GitHub/example",
+    "stage": "importing_started"
+  },
+  "15 error pnpm": {
+    "message": {
+      "code": "ERR_PNPM_LOCKFILE_MISSING_DEPENDENCY"
+    },
+    "err": {
+      "name": "Error",
+      "message": "No entry for \"/fsevents/2.1.2\" in pnpm-lock.yaml",
+      "code": "ERR_PNPM_LOCKFILE_MISSING_DEPENDENCY",
+      "stack": "Error: No entry for \"/fsevents/2.1.2\" in pnpm-lock.yaml\n    at pkgAllDeps (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/filter-lockfile/lib/filterLockfileByImportersAndEngine.js:67:23)\n    at pkgAllDeps (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/filter-lockfile/lib/filterLockfileByImportersAndEngine.js:110:9)\n    at pkgAllDeps (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/filter-lockfile/lib/filterLockfileByImportersAndEngine.js:110:9)\n    at pickPkgsWithAllDeps (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/filter-lockfile/lib/filterLockfileByImportersAndEngine.js:56:5)\n    at Object.filterByImportersAndEngine [as filterLockfileByImportersAndEngine] (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/filter-lockfile/lib/filterLockfileByImportersAndEngine.js:25:9)\n    at Object.exports.default (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/@pnpm/headless/lib/index.js:92:48)\n    at async _install (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/supi/lib/install/index.js:111:17)\n    at async Object.withLock [as default] (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/supi/lib/lock.js:17:24)\n    at async mutateModules (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/supi/lib/install/index.js:73:22)\n    at async Object.install (/Users/lodoss/.nvm/versions/node/v13.8.0/pnpm-global/3/node_modules/.pnpm/registry.npmjs.org/pnpm/4.11.5/node_modules/pnpm/lib/node_modules/supi/lib/install/index.js:42:22)"
+    }
+  }
+}
