@@ -1,23 +1,44 @@
 const calculateStatistics = require('./2_task_goods_moving.ts');
 const data = calculateStatistics.calculateStatistics(10);
-// console.dir(data);
 const arr = [];
 data.map((m) => {
     arr.push(Object.values(m));
 });
-// arr.map((el) => {
-//     console.log(el)
-    
-// })
-
-const calculateRecentSumm = (index) => {
-    const recentArr = [];
+const makeSumArray = (index) => {
     const recArr = [];
     for(let i = 0; i < arr.length; i++) {
         let arrs = arr[i]
         recArr.push(arrs[index])
     }
+    return recArr;
+}
+const calculateRecentSumm = (index) => {
+    const recArr = makeSumArray(index);
+    const recentArr = [];
     for (let i = 0 ; i < recArr.length; i++) {
+        if (i === 6) {
+            sum = recArr[i];
+            recentArr.push(sum);
+            console.log('This is 7 el =======', i, recArr[i])
+            continue;
+        }
+        if (i === 7) {
+            sum = recArr[i - 1] + recArr[i];
+            recentArr.push(sum)
+            console.log('This is 8 el =======', i, recArr[i])
+            continue;
+        }
+        if (i === 8) {
+            sum = recArr[i - 2] + recArr[i - 1] + recArr[i];
+            console.log('This is 9 el =======', i, recArr[i])
+            recentArr.push(sum)
+            continue;
+        }
+        if (i === 9) {
+            recentArr.push(recArr[i])
+            console.log('This is 10 el =======', i, recArr[i])
+            continue;
+        }
         if( i === 0) {
             recentArr.push(recArr[i])
         }
@@ -29,7 +50,7 @@ const calculateRecentSumm = (index) => {
             sum = recArr[i - 1] + recArr[i] + recArr[i + 1];
             recentArr.push(sum)
         }
-        if(i === 1) {
+        if(i === 1 || i === 7) {
             sum = recArr[i - 1] + recArr[i];
             recentArr.push(sum) 
         }
@@ -43,18 +64,37 @@ const calculateRecentSumm = (index) => {
     }
     return recentArr;
 }
+
 const recentGoodsCalc = () => {
     return calculateRecentSumm(1);
 }
 const recentAgentShippingCalc = () => {
     return calculateRecentSumm(3);
 }
+const calculateKPD = () => {
+    const procentArr = [];
+    const recArr = makeSumArray(3);
+    const consumerNeedGoodArray = makeSumArray(2);
+    for (let i =0; i< recArr.length; i++) {
+        const minus = consumerNeedGoodArray[i] - recArr[i];
+        if(minus < 0) {
+            procentArr.push(100);
+        }
+        else {
+            const proc = Math.floor((recArr[i] * 100) / consumerNeedGoodArray[i]);
+            procentArr.push(proc);
+        }
+    }
+    return procentArr;
+}
 const recentGoodsCalcArray =  recentGoodsCalc();
 const recentAgentShippingCalcArray = recentAgentShippingCalc();
+const kpd = calculateKPD();
 for (let i = 0 ; i < arr.length ; i++) {
     const arrInner = arr[i];
     arrInner.push(recentGoodsCalcArray[i]);
     arrInner.push(recentAgentShippingCalcArray[i]);
+    arrInner.push(kpd[i]);
 }
 console.log(arr)
 $(document).ready(function () {
@@ -67,7 +107,7 @@ $(document).ready(function () {
             {title: 'AgentShippingGoodsCount'},
             {title: 'Last 3 days goods count'},
             {title: 'Last 3 days agent shipping count'},
-
+            {title: 'Agent KPD (%)'},
 
         ]
     })
