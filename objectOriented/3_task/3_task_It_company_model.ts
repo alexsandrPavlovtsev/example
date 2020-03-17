@@ -18,14 +18,13 @@ class Director {
         this.projectsCount = 0;
         this.developersNeed = 0;
     }
-    takeProjects = ():Project[] => {
+    takeProjects = () => {
         const projectArr: Project[] = [];
         for(let i = 0; i < randomize(5); i++) {
             projectArr.push(new Project());
         }
         this.projects = projectArr;
         this.projectsCount = this.projects.length;
-        return projectArr;
     }
     startDay = () => {
         if(this.developersNeed > 0) {
@@ -37,9 +36,8 @@ class Director {
         this.takeProjects();
         this.sendDeveloper(randomize(5), randomize(3));
         this.chooseDepartmentForProjects();
-        this.sendProjects(randomize(3));
     }
-    hireDeveloper = (n: number = randomize(4)):void => {
+    hireDeveloper = (n: number = randomize(6)):void => {
         for(let i =0; i< n; i++) {
             developers.push(new Developer());
             this.hiredCount++;
@@ -55,22 +53,27 @@ class Director {
         }
     }
     chooseDepartmentForProjects = () => {
-        if(this.projects.length > 0) {
+        if(this.projects.length) {
+            let specializedDepartment = randomize(3);
             departments.map((el, idx) => {
-                console.log(idx)
-                if(el.type === this.projects[idx].type) {
-                    this.sendProjects(idx)
+                for(let i = 0; i< this.projects.length; i++) {
+                    if(el.type === this.projects[i].type) {
+                        specializedDepartment = idx;
+                    }
                 }
-                else {
-                    this.sendProjects(randomize(4))
-                }
-            })
+            });
+            console.log(specializedDepartment, 'SPECIALIZED department')
+            this.sendProjects(specializedDepartment);
+        }
+        else {
+            this.takeProjects();
         }
     }
     sendProjects = (n: number) => {
         console.log(departments[n].projectInWorking);
         let projectInWorking: Project[] = departments[n].projectInWorking;
         projectInWorking = projectInWorking.concat(this.projects);
+        console.log(projectInWorking, 'projects in working!!!!');
         const developersCount = departments[n].developersCount;
         const developersCanBeUsed = developersCount - projectInWorking.length;
         if(departments[n].projectInWorkingCount < departments[n].developersCount) {
@@ -139,7 +142,7 @@ const departments = [new Department('web'), new Department('mobile'), new Depart
 const developers = [];
 const project = []
 director.startDay();
-console.dir(director);
-console.dir(departments);
-console.dir(developers);
-console.dir(project);
+console.log(director);
+console.log(departments);
+console.log(developers);
+console.log(project);
