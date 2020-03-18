@@ -5,7 +5,7 @@
 /* eslint no-plusplus: 0 */ // --> OFF
 
 // eslint-disable-next-line max-classes-per-file
-const randomize = (n: number) => Math.floor(Math.random() * n);
+const randomize = (n: number): number => Math.floor(Math.random() * n);
 class Director {
     hiredCount: number;
 
@@ -15,18 +15,26 @@ class Director {
 
     projectsCount: number;
 
-    developersNeed: number;
+    developersNeed: {};
+
+    developersNeedCount: 0;
 
     projectsOnHold: Project[];
 
-    constructor(public name: string) {
+    departments: WebDepartment[];
+
+    developers: Developer[];
+
+    constructor(public name: string, departments: WebDepartment[], developers: Developer[]) {
       this.name = name;
       this.hiredCount = 0;
       this.firedCount = 0;
       this.projects = [];
       this.projectsOnHold = [];
       this.projectsCount = 0;
-      this.developersNeed = 0;
+      this.developersNeed = {};
+      this.departments = departments;
+      this.developers = developers;
     }
 
     takeProjects = () => {
@@ -36,73 +44,68 @@ class Director {
       }
       this.projects = projectArr;
       this.projectsCount = this.projects.length;
-    }
+    };
 
     startDay = () => {
-      if (this.developersNeed > 0) {
-        this.hireDeveloper(this.developersNeed);
-      } else {
-        this.hireDeveloper();
-      }
       this.takeProjects();
-      this.sendDeveloper(randomize(5), randomize(3));
-      this.chooseDepartmentForProjects();
-    }
+      if (this.developersNeedCount > 0) this.hireDeveloper(this.developersNeedCount, 'mob');
+      if (this.developers.length) this.sendDeveloper();
+      if (this.projectsCount > 0) this.chooseDepartmentForProjects();
+    };
 
-    hireDeveloper = (n: number = randomize(6)):void => {
+    hireDeveloper = (n: number = randomize(6), specialization: string):void => {
       for (let i = 0; i < n; i += 1) {
-        developers.push(new Developer());
+        this.developers.push(new Developer(specialization));
         this.hiredCount++;
       }
-    }
+    };
 
     firedDeveloper = (firedId: number) => {
       this.firedCount++;
-      developers.filter((id) => id !== firedId);
-    }
+      this.developers.filter((d) => d.id !== firedId);
+    };
 
-    sendDeveloper = (n: number, depId: number) => {
-      for (let i = 0; i < n; i += 1) {
-        departments[depId].developers.push(new Developer());
-        departments[depId].developersCount++;
+    sendDeveloper = () => {
+      for (let i = 0; i < this.developers.length; i++) {
+        for (let j = 0; j < this.departments.length; i++) {
+          if (this.developers[i].specialization === this.departments[j].type) {
+            this.departments[j].developers.push(this.developers[i]);
+            this.departments[j].developersCount++;
+          }
+        }
       }
-    }
+    };
 
     chooseDepartmentForProjects = () => {
       if (this.projects.length) {
-        let specializedDepartment = randomize(3);
-        departments.map((el, idx) => {
+        let specializedDepartment;
+        this.departments.map((el, idx) => {
           for (let i = 0; i < this.projects.length; i += 1) {
             if (el.type === this.projects[i].type) {
               specializedDepartment = idx;
             }
           }
+          this.sendProjects(specializedDepartment);
         });
-        console.log(specializedDepartment, 'SPECIALIZED department');
-        this.sendProjects(specializedDepartment);
-      } else {
-        this.takeProjects();
       }
-    }
+    };
 
     sendProjects = (n: number) => {
-      console.log(departments[n].projectInWorking);
-
-      let { projectInWorking } = departments[n];
+      let { projectInWorking } = this.departments[n];
       projectInWorking = projectInWorking.concat(this.projects);
 
       console.log(projectInWorking, 'projects in working!!!!');
-      console.log(departments[n].projectInWorking, 'projects in working departments!!!!');
+      console.log(this.departments[n].projectInWorking, 'projects in working departments!!!!');
 
-      const { developersCount } = departments[n];
+      const { developersCount } = this.departments[n];
       const developersCanBeUsed = developersCount - projectInWorking.length;
 
       console.log(developersCanBeUsed, 'DEVELOPERS CAN BE USED!!!!!');
       console.log(this.projects, 'THIS projects!!!!!!!!');
 
       if (developersCanBeUsed > 0) {
-        departments[n].projectInWorking = projectInWorking;
-        departments[n].projectInWorkingCount = projectInWorking.length;
+        this.departments[n].projectInWorking = projectInWorking;
+        this.departments[n].projectInWorkingCount = projectInWorking.length;
 
         console.log(projectInWorking.length, 'project in working LENGTH!!!!');
 
@@ -119,7 +122,7 @@ class Director {
 
       console.log(projectInWorking);
 
-      departments[n].projectInWorking = projectInWorking;
+      this.departments[n].projectInWorking = projectInWorking;
       return projectInWorking;
     }
 }
@@ -134,19 +137,55 @@ class Department {
 
     projectInWorking: Project[];
 
-    type: string;
-
     developersCount: number;
 
-    constructor(type: string) {
+    public currentDay: Day;
+
+    constructor(currentDay: Day) {
       this.id = randomize(1200);
       this.developers = [];
       this.developersCount = 0;
+      this.currentDay = currentDay;
       this.endedProjects = 0;
       this.projectInWorking = [];
-      this.type = type;
       this.projectInWorkingCount = 0;
     }
+}
+class WebDepartment extends Department {
+  type: string;
+
+  constructor(currentDay: Day) {
+    super(currentDay);
+    this.type = 'web';
+  }
+}
+class MobileDepartment extends Department {
+  type: string;
+
+  constructor(currentDay: Day) {
+    super(currentDay);
+    this.type = 'mob';
+  }
+}
+class QaDepartment extends Department {
+  type: string;
+
+  constructor(currentDay: Day) {
+    super(currentDay);
+    this.type = 'qa';
+  }
+  // startTesting():void {
+  //   const startDay = this.currentDay.number;
+  //   const endTestingDay = this.currentDay.number + 1;
+  //
+  // }
+}
+class Day {
+  number: number;
+
+  constructor() {
+    this.number = 0;
+  }
 }
 class Project {
     done: boolean;
@@ -163,7 +202,7 @@ class Project {
       this.id = randomize(1200);
       this.difficulty = randomize(4);
       const types = ['web', 'mob'];
-      this.type = types[randomize(3)];
+      this.type = types[randomize(2)];
       this.tested = false;
       this.done = false;
     }
@@ -177,25 +216,28 @@ class Developer {
 
     specialization: string;
 
-    constructor() {
+    finishedProjects: number;
+
+    constructor(specialization: string) {
       this.id = randomize(1200);
-      const specialization: string[] = ['web', 'mobile', 'qa'];
-      this.specialization = specialization[randomize(3)];
+      this.specialization = specialization;
       this.hired = false;
       this.fired = false;
+      this.finishedProjects = 0;
     }
 }
 const countingDays = (n: number) => {
   for (let i = 0; i < n; i += 1) {
     director.startDay();
+    day.number++;
   }
 };
-const director = new Director('John');
-const departments = [new Department('web'), new Department('mobile'), new Department('qa')];
+const day = new Day();
+const departments = [new WebDepartment(day), new MobileDepartment(day), new QaDepartment(day)];
 const developers = [];
-const project = [];
-countingDays(3);
-console.log(director);
-console.log(departments);
-console.log(developers);
-console.log(project);
+const director = new Director('John', departments, developers);
+countingDays(1);
+// console.log(director);
+// console.log(departments);
+// console.log(developers);
+// console.log(project);
