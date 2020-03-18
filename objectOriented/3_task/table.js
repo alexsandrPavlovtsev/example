@@ -1,5 +1,5 @@
 
-const initizlizeDataFunc = require('./initialize_table_data');
+// const initizlizeDataFunc = require('./initialize_table_data');
 const tableData = [[21,1,2,3,4,5],
 [21,1,2,3,4,5],[21,1,2,3,4,5],[21,1,2,3,4,5],[21,1,2,3,4,5],[21,1,2,3,4,5],[21,1,2,3,4,5],[21,1,2,3,4,5],];
 $(document).ready(function () {
@@ -12,7 +12,6 @@ $(document).ready(function () {
             {title: 'Agent shipping goods count'},
             {title: 'Last 3 days goods count'},
             {title: 'Last 3 days agent shipping count'},
-            {title: 'Agent KPD (%)'},
 
         ]
     })
