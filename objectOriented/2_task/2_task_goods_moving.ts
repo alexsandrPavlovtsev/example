@@ -7,7 +7,7 @@ const randomNumberGenerate = function (min: number, max: number): number {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 };
-class ProductConsumer {
+export class ProductConsumer {
   name: string;
 
   consumerNeeds: number;
@@ -42,7 +42,7 @@ class ProductConsumer {
   }
 }
 
-class Agent {
+export class Agent {
   name: string;
 
   totalShippingProducts: number;
@@ -93,7 +93,7 @@ class Agent {
   }
 
   sendGoodToTheCargo(productOnCargo: number = 0):void {
-    console.log('CARGO SENDING !!!!!', productOnCargo)
+    console.log('CARGO SENDING !!!!!', productOnCargo);
     this.productProducer.productOnCargo = productOnCargo;
   }
 
@@ -141,7 +141,7 @@ class Agent {
     }
   }
 }
-class ProductProducer {
+export class ProductProducer {
     name: string;
 
     productCount: number;
@@ -194,110 +194,17 @@ class Product {
       return this.name;
     }
 }
-// class GenerateInfo {
-//     dayNumber: number;
-//
-//     productProducerGoodsCount: number;
-//
-//     productConsumerNeedGoodsCount: number;
-//
-//     agentShippingGoodsCount: number;
-//
-//     constructor(dayNumber: number, productProducerGoodsCount: number,
-//       productConsumerNeedGoodsCount: number, agentShippingGoodsCount: number) {
-//       this.dayNumber = dayNumber;
-//       this.productProducerGoodsCount = productProducerGoodsCount;
-//       this.productConsumerNeedGoodsCount = productConsumerNeedGoodsCount;
-//       this.agentShippingGoodsCount = agentShippingGoodsCount;
-//     }
-//
-//     get dayNumberProperty(): number {
-//       return this.dayNumber;
-//     }
-//
-//     get productProducerGoodsCountProperty(): number {
-//       return this.productProducerGoodsCount;
-//     }
-//
-//     get productConsumerNeedGoodsCountProperty(): number {
-//       return this.productConsumerNeedGoodsCount;
-//     }
-//
-//     get agentShippingGoodsCountProperty(): number {
-//       return this.agentShippingGoodsCount;
-//     }
-//
-//     set dayNumberProperty(params) {
-//       this.dayNumber = params;
-//     }
-//
-//     set productProducerGoodsCountProperty(params: number) {
-//       this.productProducerGoodsCount = params;
-//     }
-//
-//     set productConsumerNeedGoodsCountProperty(params: number) {
-//       this.productConsumerNeedGoodsCount = params;
-//     }
-//
-//     set agentShippingGoodsCountProperty(params: number) {
-//       this.agentShippingGoodsCount = params;
-//     }
-// }
-// class Day {
-//     productConsumerNeedGoodsCount: number;
-//
-//     agentShippingGoodsCount: number;
-//
-//     productProducerGoodsCount: number;
-//
-//     productProducer: ProductProducer;
-//
-//     product: Product;
-//
-//     productConsumer: ProductConsumer;
-//
-//     agent: Agent;
-//
-//     dayNumber: number;
-//
-//     constructor() {
-//       this.dayNumber = 0;
-//       this.productProducerGoodsCount = 0;
-//       this.productConsumerNeedGoodsCount = 0;
-//       this.agentShippingGoodsCount = 0;
-//       this.product = new Product('Super dicer');
-//       this.productProducer = new ProductProducer('Alibaba');
-//       this.productConsumer = new ProductConsumer('Vasiliy');
-//       this.agent = new Agent('John');
-//     }
-//
-//     randomGenerateCount() {
-//       this.productProducerGoodsCount = this.productProducer.randomGenerateProducts();
-//       this.productConsumerNeedGoodsCount = this.productConsumer.consumerNeed();
-//       this.agentShippingGoodsCount = this.agent.calculateShippingGoods();
-//     }
-//
-//     startDay() {
-//       this.randomGenerateCount();
-//       this.dayNumber += 1;
-//     }
-//
-//     generateInfo(): GenerateInfo {
-//       return new GenerateInfo(this.dayNumber, this.productProducerGoodsCount,
-//         this.productConsumerNeedGoodsCount, this.agentShippingGoodsCount);
-//     }
-//
-//     getStatistics(): GenerateInfo {
-//       return this.generateInfo();
-//     }
-// }
+
 let agent;
 let consumer;
 let productProducer;
 const statisticsArray = [];
+let dayCount = 0;
 // eslint-disable-next-line max-len
 const startSimulation = (productProducerParam: ProductProducer, agentParam: Agent, consumerParams: ProductConsumer) => {
   const statArr = [];
+  dayCount += 1;
+  statArr.push(dayCount);
   productProducerParam.randomGenerateProducts();
   consumerParams.consumerNeed();
   agentParam.generateAgentCanDeliveryParams();
@@ -326,7 +233,7 @@ const startSimulation = (productProducerParam: ProductProducer, agentParam: Agen
   statisticsArray.push(statArr);
 };
 
-const generateInfo = (days: number, productProducerParam: ProductProducer, agentName: string, consumerParams: ProductConsumer): number[] => {
+export const generateInfo = (days: number, productProducerParam: ProductProducer, agentName: string, consumerParams: ProductConsumer): number[] => {
   consumer = consumerParams;
   productProducer = productProducerParam;
   agent = new Agent(agentName, productProducerParam, consumerParams);
@@ -335,17 +242,5 @@ const generateInfo = (days: number, productProducerParam: ProductProducer, agent
   }
   return statisticsArray;
 };
-export default generateInfo;
-const a = generateInfo(10, new ProductProducer('Alibaba'), 'Nikolay', new ProductConsumer('Misha'));
-console.log(a);
-// const calculateStatistics = (daysCount): GenerateInfo[] => {
-//   const day = new Day();
-//   const statArray: GenerateInfo[] = [];
-//   for (let i = 0; i < daysCount; i += 1) {
-//     day.startDay();
-//     statArray.push(day.getStatistics());
-//   }
-//   return statArray;
-// };
-// const statistics = calculateStatistics(7);
-// export default calculateStatistics;
+// const a = generateInfo(10, new ProductProducer('Alibaba'), 'Nikolay', new ProductConsumer('Misha'));
+// console.log(a);
