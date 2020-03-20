@@ -14,6 +14,7 @@ const randomizeMinMax = function (min: number, max: number): number {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 };
+type DepartmentsArray = (WebDepartment | QaDepartment | MobileDepartment)[]
 class Director {
     hiredCount: number;
 
@@ -29,7 +30,7 @@ class Director {
 
     projectsOnHold: Project[];
 
-    departments: WebDepartment[];
+    departments: DepartmentsArray;
 
     developers: Developer[];
 
@@ -37,7 +38,7 @@ class Director {
 
     day: Day;
 
-    constructor(public name: string, departments: WebDepartment[], developers: Developer[], day: Day) {
+    constructor(public name: string, departments: DepartmentsArray, developers: Developer[], day: Day) {
       this.name = name;
       this.hiredCount = 0;
       this.firedCount = 0;
@@ -72,7 +73,7 @@ class Director {
 
     countNeededDevelopersForProjects(dev: any[]):void {
       const neededDevelopers: any[] = [
-        { type: 'web', count: 0 }, { type: 'mob', count: 0 },
+        { type: 'web', count: 0 }, { type: 'mob', count: 0 }, { type: 'qa', count: 0 },
       ];
       dev.forEach((p) => {
         neededDevelopers.forEach((el) => {
@@ -86,22 +87,15 @@ class Director {
     }
 
     hireDeveloper = ():void => {
-      const webDevNumber: number = this.developersNeed[0].count;
-      const mobileDevNumber: number = this.developersNeed[1].count;
-      const specialization: string[] = ['web', 'mob'];
-      if (webDevNumber > 0) {
-        for (let i = 0; i < webDevNumber; i++) {
-          this.developers.push(new Developer(specialization[0], this.day));
-          this.hiredCount++;
+      const specialization: string[] = ['web', 'mob', 'qa'];
+      this.developersNeed.forEach((dN, idx) => {
+        if (dN.count > 0) {
+          for (let i = 0; i < dN.count; i++) {
+            this.developers.push(new Developer(specialization[idx], this.day));
+            this.hiredCount++;
+          }
         }
-      }
-      if (mobileDevNumber > 0) {
-        for (let i = 0; i < mobileDevNumber; i++) {
-          this.developers.push(new Developer(specialization[1], this.day));
-          this.hiredCount++;
-        }
-      }
-      this.sendDeveloper();
+      });
       // console.log(this.developers);
     };
 
@@ -133,53 +127,50 @@ class Director {
     };
 
     sendDevelopers = () => {
-      let needWebDev = this.developersNeed[0].count;
-      let needMobileDev = this.developersNeed[1].count;
-      console.log(needWebDev, 'NEED WEB DEVELOPERSSSSS');
-      console.log(needMobileDev, 'NEED MOBILE DEVELOPERSSSSS');
-      const projectTypes = ['web', 'mob'];
-      const webDepartment = this.departments[0];
-      const mobileDepartment = this.departments[1];
+      // let needWebDev = this.developersNeed[0].count;
+      // let needMobileDev = this.developersNeed[1].count;
+      // console.log(needWebDev, 'NEED WEB DEVELOPERSSSSS');
+      // console.log(needMobileDev, 'NEED MOBILE DEVELOPERSSSSS');
+      const projectTypes = ['web', 'mob', 'qa'];
+      // const webDepartment = this.departments[0];
+      // const mobileDepartment = this.departments[1];
       if (this.developers.length) {
         // console.log(this.developers, 'THIS developeerssssssss');
         // console.log(this.developers);
-        const mobileDevelopers = this.developers.filter((d) => d.specialization === 'mob');
-        const webDevelopers = this.developers.filter((d) => d.specialization === 'web');
-        if (needWebDev > 0) {
-          console.log(needWebDev, 'neeed web DEV CIRCLE');
-          for (let i = 0; i <= needWebDev; i++) {
-            console.log(needWebDev, 'needWebDev!!!!!!', 'i = ', i);
-            // console.log(needWebDev, 'needWebDev!!!!!!', 'i = ', webDevelopers[i]);
-            // console.log(needWebDev, 'needWebDev!!!!!!', 'i = ', webDevelopers[i]);
-            needWebDev--;
-            webDepartment.developers.push(webDevelopers[i]);
-            this.developers = this.developers.filter((dev) => dev.id !== webDevelopers[i].id);
+        // const mobileDevelopers = this.developers.filter((d) => d.specialization === 'mob');
+        // const webDevelopers = this.developers.filter((d) => d.specialization === 'web');
+        this.developersNeed.forEach((nD, idx) => {
+          if (nD.count > 0) {
+            for (let i = 0; i <= nD.count; i++) {
+              console.dir(nD.count, 'needDev!!!!!!', 'i = ', i);
+              const specDevelopers = this.developers.filter((d) => d.specialization === projectTypes[idx]);
+              nD.count--;
+              if (specDevelopers.length) {
+                const specDevOutgoing = specDevelopers[randomizeMinMax(0, specDevelopers.length - 1)];
+                console.dir(specDevOutgoing, 'Spec dev outgoing!-------');
+                this.departments[idx].developers.push(specDevOutgoing);
+                this.developers = this.developers.filter((dev) => dev.id !== specDevOutgoing.id);
+              }
+              console.dir(this.departments[idx].type, 'Type of departments!!!');
+              console.dir(this.departments[idx].developers, 'This departments developers!!!');
+              console.dir(this.developers, 'This developers!!!');
+            }
           }
-          needWebDev = 0;
-        } if (needMobileDev > 0) {
-          console.log(needMobileDev, 'neeed mob DEV CIRCLE');
-          for (let i = 0; i < needMobileDev; i++) {
-            console.log(needMobileDev, 'needMobileDev!!!!!!');
-            mobileDepartment.developers.push(mobileDevelopers[i]);
-            needMobileDev--;
-            this.developers = this.developers.filter((dev) => dev.id !== mobileDevelopers[i].id);
-          }
-          needMobileDev = 0;
-        }
+        });
       } else {
         console.log('NO DEVELOPERS!!!!');
       }
-      console.log(mobileDepartment.developers, 'Mobile Departmens Pogrammers!!!!');
-      console.log(webDepartment.developers, 'Web Departmens Pogrammers!!!!');
-      console.log(this.developers, 'This Pogrammers!!!!');
+      // console.log(mobileDepartment.developers, 'Mobile Departmens Pogrammers!!!!');
+      // console.log(webDepartment.developers, 'Web Departmens Pogrammers!!!!');
+      // console.log(this.developers, 'This Pogrammers!!!!');
     };
 
     chooseDepartmentForProjects = () => {
       const departmentTypes = ['web', 'mob'];
-      let idlersInMobDep = false;
-      let idlersInWebDep = false;
-      if (this.departments[0].checkDepartmentForIdlers() > 0) idlersInWebDep = true;
-      if (this.departments[1].checkDepartmentForIdlers() > 0) idlersInMobDep = true;
+      const idlersInMobDep = this.departments[0].checkDepartmentForIdlers() > 0;
+      const idlersInWebDep = this.departments[1].checkDepartmentForIdlers() > 0;
+      // if (this.departments[0].checkDepartmentForIdlers() > 0) idlersInWebDep = true;
+      // if (this.departments[1].checkDepartmentForIdlers() > 0) idlersInMobDep = true;
 
       console.log(idlersInMobDep, 'Idlers in mob department!!!==========');
       console.log(idlersInWebDep, 'Idlers in web department!!!==========');
@@ -187,33 +178,32 @@ class Director {
       if (this.projects.length && (idlersInMobDep || idlersInWebDep)) {
         let specializedDepartment;
         departmentTypes.forEach((type, idx) => {
-          if (this.departments[idx].checkDepartmentForIdlers()) return;
-          let find = false;
-          while (find === false) {
-            for (let i = 0; i < this.projects.length; i++) {
-              if (type === this.projects[i].type) {
-                specializedDepartment = idx;
-                this.sendProjects(idx, this.projects[i]);
-                this.departments[idx].projectInWorkingCount++;
-              }
+          // if (this.departments[idx].checkDepartmentForIdlers()) return;
+          for (let i = 0; i < this.projects.length; i++) {
+            if (type === this.projects[i].type) {
+              specializedDepartment = idx;
+              this.sendProjects(idx, this.projects[i]);
+              this.departments[idx].projectsInWorkingCount++;
             }
-            find = true;
           }
         });
         console.log(this.departments[specializedDepartment], 'THIS DEPARTMENTS!!! TYPE==========');
         console.log(this.departments[specializedDepartment].checkDepartmentForIdlers(), 'THIS DEPARTMENTS idlers ==_-=-=-=-');
-        console.log(this.departments[specializedDepartment].projectInWorking, 'project in working----1-1-1');
+        console.log(this.departments[specializedDepartment].projectsInWorking, 'project in working----1-1-1');
       }
     };
 
     sendProjects = (n: number, project: Project) => {
       console.log(n, 'this is send projects number');
-      let { projectInWorking } = this.departments[n];
-      projectInWorking = projectInWorking.concat(project);
-      this.departments[n].projectInWorking = projectInWorking;
-      this.departments[n].projectInWorkingCount = projectInWorking.length;
-      // console.log(projectInWorking.length, 'project in working LENGTH!!!!');
-      return projectInWorking;
+      let { projectsInWorking } = this.departments[n];
+      const sendedProject = project;
+      sendedProject.dayWhenProjectBeenSendToDep = this.day.number;
+      projectsInWorking = projectsInWorking.concat(sendedProject);
+      this.departments[n].projectsInWorking = projectsInWorking;
+      this.departments[n].projectsInWorkingCount = projectsInWorking.length;
+      console.log(this.departments[n].projectsInWorking);
+      // console.log(projectsInWorking.length, 'project in working LENGTH!!!!');
+      return projectsInWorking;
     }
 }
 class Department {
@@ -223,11 +213,9 @@ class Department {
 
     endedProjects: number;
 
-    projectInWorkingCount: number;
+    projectsInWorkingCount: number;
 
-    projectInWorking: Project[];
-
-    developersCount: number;
+    projectsInWorking: Project[];
 
     idlersDevelopersCount: number;
 
@@ -236,13 +224,14 @@ class Department {
     constructor(currentDay: Day) {
       this.id = randomize(1200);
       this.developers = [];
-      this.developersCount = 0;
       this.day = currentDay;
       this.endedProjects = 0;
-      this.projectInWorking = [];
+      this.projectsInWorking = [];
       this.idlersDevelopersCount = 0;
-      this.projectInWorkingCount = 0;
+      this.projectsInWorkingCount = 0;
     }
+
+    returnDevelopersCount = () => this.developers.length;
 
     checkDepartmentForIdlers = () => this.idlersDevelopersCount;
 }
@@ -253,13 +242,71 @@ class WebDepartment extends Department {
     super(currentDay);
     this.type = 'web';
   }
+
+  checkProjectForGoingOnTesting = () => {
+    if (this.projectsInWorking) {
+      this.projectsInWorking.forEach((p) => {
+        const projectInDevelopment = this.day.number - p.dayWhenProjectBeenSendToDep;
+        if (projectInDevelopment === 1) {
+          p.dayWhenProjectBeenSendToDep = this.day.number;
+        }
+      });
+    }
+  };
+
+  sendProjectOnTesting = (department: QaDepartment) => {
+    if (this.projectsInWorking) {
+      this.projectsInWorking.forEach((p) => {
+        const projectId = p.id;
+        if (p.dayWhenGoOnTesting > 0) {
+          department.projectsInWorking.push(p);
+          this.projectsInWorking.filter((proj) => proj.id !== projectId);
+        }
+      });
+    }
+  }
 }
+
 class MobileDepartment extends Department {
   type: string;
 
   constructor(currentDay: Day) {
     super(currentDay);
     this.type = 'mob';
+  }
+
+  startDay = (qaDepartment: QaDepartment) => {
+    this.checkProjectForGoingOnTesting();
+    this.sendProjectOnTesting(qaDepartment);
+  };
+
+  checkProjectForGoingOnTesting = () => {
+    console.log(this.projectsInWorking.length, 'this projects in working length-=!-=-!=-=!-=-!')
+    if (this.projectsInWorking.length) {
+      this.projectsInWorking.forEach((p) => {
+        console.log(p, 'Project that go on testing=-=-=-=======');
+        const projectInDevelopment = this.day.number - p.dayWhenProjectBeenSendToDep;
+        const { difficulty } = p;
+        const isEqual = projectInDevelopment === difficulty;
+        if (isEqual) {
+          p.dayWhenGoTesting = this.day.number;
+        }
+      });
+    }
+  };
+
+  sendProjectOnTesting = (qaDepartment: QaDepartment) => {
+    if (this.projectsInWorking.length) {
+      this.projectsInWorking.forEach((p) => {
+        const projectId = p.id;
+        if (p.dayWhenGoTesting > 0) {
+          qaDepartment.projectsInWorking.push(p);
+          this.projectsInWorking.filter((proj) => proj.id !== projectId);
+          this.endedProjects++;
+        }
+      });
+    }
+    console.log(qaDepartment.projectsInWorking, 'Qa department projects in working=-=-=-=---==--=-=-');
   }
 }
 class QaDepartment extends Department {
@@ -269,10 +316,10 @@ class QaDepartment extends Department {
     super(currentDay);
     this.type = 'qa';
   }
+
   // startTesting():void {
   //   const startDay = this.currentDay.number;
   //   const endTestingDay = this.currentDay.number + 1;
-  //
   // }
 }
 class Day {
@@ -293,6 +340,10 @@ class Project {
 
     type: string;
 
+    dayWhenProjectBeenSendToDep: number;
+
+    dayWhenGoOnTesting: number;
+
     constructor() {
       this.id = randomize(1200);
       this.difficulty = randomize(4);
@@ -300,6 +351,8 @@ class Project {
       this.type = types[randomize(2)];
       this.tested = false;
       this.done = false;
+      this.dayWhenProjectBeenSendToDep = 0;
+      this.dayWhenGoOnTesting = 0;
     }
 }
 class Developer {
@@ -327,17 +380,22 @@ class Developer {
       this.day = day;
     }
 }
+
+const day = new Day();
+const departments: DepartmentsArray = [new WebDepartment(day), new MobileDepartment(day), new QaDepartment(day)];
+const developers = [];
+const director = new Director('John', departments, developers, day);
 const countingDays = (n: number) => {
   for (let i = 0; i < n; i += 1) {
     director.startDay();
+    const mobDev = departments[1];
+    if (mobDev instanceof MobileDepartment) {
+      mobDev.startDay(departments[2]);
+    }
     day.number++;
   }
 };
-const day = new Day();
-const departments = [new WebDepartment(day), new MobileDepartment(day), new QaDepartment(day)];
-const developers = [];
-const director = new Director('John', departments, developers, day);
-countingDays(1);
+countingDays(3);
 // console.log(director);
 // console.log(departments);
 // console.log(developers);
